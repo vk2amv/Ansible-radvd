@@ -1,0 +1,114 @@
+# {{ ansible_managed }}
+#
+# RADVD - config file
+# https://linux.die.net/man/5/radvd.conf
+# https://manpages.debian.org/testing/radvd/radvd.conf.5.en.html
+# https://github.com/radvd-project/radvd/blob/master/radvd.conf.example
+
+{% for iface in radvd_daemon_interfaces %}
+# INTERFACE SPECIFIC OPTIONS
+interface {{ iface.interface }} {
+{% for option in iface.options %}
+{% if option.advsendadvert is defined %}  AdvSendAdvert {{ option.advsendadvert }};
+{% endif -%}
+{% if option.advmanagedflag is defined %}  AdvManagedFlag {{ option.advmanagedflag }};
+{% endif -%}
+{% if option.minrtradvinterval is defined %}  MinRtrAdvInterval {{ option.minrtradvinterval }};
+{% endif -%}
+{% if option.maxrtradvinterval is defined %}  MaxRtrAdvInterval {{ option.maxrtradvinterval }};
+{% endif -%}
+{% if option.mindelaybetweenra is defined %}  MinDelayBetweenRA {{ option.mindelaybetweenra }};
+{% endif -%}
+{% if option.ignoreifmissing is defined %}  IgnoreIfMissing {{ option.ignoreifmissing }};
+{% endif -%}
+{% if option.advotherconfigflag is defined %}  AdvOtherConfigFlag {{ option.advotherconfigflag }};
+{% endif -%}
+{% if option.advlinkmtu is defined %}  AdvLinkMTU {{ option.advlinkmtu }};
+{% endif -%}
+{% if option.advreachabletime is defined %}  AdvReachableTime {{ option.advreachabletime }};
+{% endif -%}
+{% if option.advretranstimer is defined %}  AdvRetransTimer {{ option.advretranstimer }};
+{% endif -%}
+{% if option.advcurhoplimit is defined %}  AdvCurHopLimit {{ option.advcurhoplimit }};
+{% endif -%}
+{% if option.advdefaultlifetime is defined %}  AdvDefaultLifetime {{ option.advdefaultlifetime }};
+{% endif -%}
+{% if option.advdefaultpreference is defined %}  AdvDefaultPreference {{ option.advdefaultpreference }};
+{% endif -%}
+{% if option.advsourcelladdress is defined %}  AdvSourceLLAddress {{ option.advsourcelladdress }};
+{% endif -%}
+{% if option.advhomeagentflag is defined %}  AdvHomeAgentFlag {{ option.advhomeagentflag }};
+{% endif -%}
+{% if option.advhomeagentinfo is defined %}  AdvHomeAgentInfo {{ option.advhomeagentinfo }};
+{% endif -%}
+{% if option.homeagentlifetime is defined %}  HomeAgentLifetime {{ option.homeagentlifetime }};
+{% endif -%}
+{% if option.homeagentpreference is defined %}  HomeAgentPreference {{ option.homeagentpreference }};
+{% endif -%}
+{% if option.advmobrtrsupportflag is defined %}  AdvMobRtrSupportFlag {{ option.advmobrtrsupportflag }};
+{% endif -%}
+{% if option.advintervalopt is defined %}  AdvIntervalOpt {{ option.advintervalopt }};
+{% endif -%}
+{% if option.unicastonly is defined %}  UnicastOnly {{ option.unicastonly }};
+{% endif -%}
+  {% endfor %}
+{% for prefix in iface.prefixes %}
+# PREFIX SPECIFIC OPTIONS
+  prefix {{ prefix.prefix }} {
+{% if prefix.advonlink is defined %}    AdvOnLink {{ prefix.advonlink }};
+{% endif -%}
+{% if prefix.advautonomous is defined %}    AdvAutonomous {{ prefix.advautonomous }};
+{% endif -%}
+{% if prefix.advrouteraddr is defined %}    AdvRouterAddr {{ prefix.advrouteraddr }};
+{% endif -%}
+{% if prefix.advvalidlifetime is defined %}    AdvValidLifetime {{ prefix.advvalidlifetime }};
+{% endif -%}
+{% if prefix.advpreferredlifetime is defined %}    AdvPreferredLifetime {{ prefix.advpreferredlifetime }};
+{% endif -%}
+{% if prefix.base6to4interface is defined %}    Base6to4Interface {{ prefix.base6to4interface }};
+{% endif -%}
+  };
+  {% endfor %}
+{% if iface.nameservers is defined %} 
+{% for ns in iface.nameservers %}
+# RDNSS Specific Options
+  RDNSS {{ ns.rdnss }} {
+{% if ns.advrdnsspreference is defined %}    AdvRDNSSPreference {{ ns.advrdnsspreference }};
+{% endif -%}
+{% if ns.advrdnssopen is defined %}    AdvRDNSSOpen {{ ns.advrdnssopen }};
+{% endif -%}
+{% if ns.advrdnsslifetime is defined %}    AdvRDNSSLifetime {{ ns.advrdnsslifetime }};
+{% endif -%}
+{% if ns.flushrdnss is defined %}    FlushRDNSS {{ ns.flushrdnss }};
+{% endif -%}
+  };  
+  {% endfor %}
+  {% endif %}
+{% if iface.route_options is defined %}
+{% for route in iface.route_options %}
+# ROUTE SPECIFIC OPTIONS
+  route {{ route.route }} {
+{% if route.advroutelifetime is defined %}    AdvRouteLifetime {{ route.advroutelifetime }};
+{% endif -%}
+{% if route.advroutepreference is defined %}    AdvRoutePreference {{ route.advroutepreference }};
+{% endif -%}
+{% if route.removeroute is defined %}    RemoveRoute {{ route.removeroute }};
+{% endif -%}
+  };
+  {% endfor %}
+  {% endif %}
+{% if iface.domains is defined %}
+{% for domain in iface.domains %}
+# DNSSL SPECIFIC OPTIONS
+  DNSSL {{ domain.dnssl }} {
+{% if domain.advdnssllifetime is defined %}    AdvDNSSLLifetime {{ domain.advdnssllifetime }};
+{% endif -%}
+{% if domain.flushdnssl is defined %}    FlushDNSSL {{ domain.flushdnssl }};
+{% endif -%}
+  };
+  {% endfor %}
+  {% endif %}
+};
+
+
+{% endfor %}

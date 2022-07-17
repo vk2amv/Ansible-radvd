@@ -1,0 +1,64 @@
+---
+
+# Deadmans switch to prevent this role overwriting existing configuration unless specifically set to run
+radvd_daemon_run: "false"
+
+
+# Define interfaces to listen on
+radvd_daemon_interfaces:
+
+  - interface: '{{ ansible_default_ipv4.interface }}'
+    # General interface options
+    options:
+      - advsendadvert: "on"
+#        advmanagedflag: ""      
+        minrtradvinterval: "3"
+        maxrtradvinterval: "10"        
+#        mindelaybetweenra: ""
+#        ignoreifmissing: ""
+#        advotherconfigflag: ""
+#        advlinkmtu: ""
+#        advreachabletime: ""
+#        advretranstimer: ""
+#        advcurhoplimit: ""
+#        advdefaultlifetime: ""
+#        advdefaultpreference: ""
+#        advsourcelladdress: ""
+#        advhomeagentflag: ""
+#        advhomeagentinfo: ""
+#        homeagentlifetime: ""
+#        homeagentpreference: ""
+#        advmobrtrsupportflag: ""
+#        advintervalopt: ""
+#        unicastonly: ""
+
+    # Prefixes to advertise on this interface
+    prefixes:
+      - prefix: "2001:0db8:0100:f101::/64"
+        advonlink: "on"
+        advautonomous: "on"
+        advrouteraddr: "on"
+#        advvalidlifetime: ""
+#        advpreferredlifetime: ""
+#        base6to4interface: ""
+
+    # RDNSS, Nameservers advertised on this interface
+#    nameservers:
+#      - rdnss: ""
+#        advrdnsspreference: ""
+#        advrdnssopen: ""
+#        advrdnsslifetime: ""
+#        flushrdnss: ""
+
+    # Advertise specific route options on this interface
+#    route_options:
+#        route: ""
+#        advroutelifetime: ""
+#        advroutepreference: ""
+#        removeroute: ""
+
+    # Search domains advertised on this interface
+#    domains:
+#      - dnssl: "example.com example2.com"
+#        advdnssllifetime: ""
+#        flushdnssl: ""

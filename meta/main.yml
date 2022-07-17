@@ -1,0 +1,17 @@
+galaxy_info:
+  role_name: radvd-daemon
+  author: Lindsay Harvey
+  description: Ansible role to install Linux IPv6 Router Advertisement Daemon (radvd)
+  license: MIT
+  min_ansible_version: 2.6.0
+  platforms:
+    - name: Debian
+      versions: 
+        - buster
+        - bullseye
+  galaxy_tags:
+    - radvd
+    - system
+    - networking
+    - managed
+dependencies: []

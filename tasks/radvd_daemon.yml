@@ -1,0 +1,29 @@
+---
+
+- name: Apt Update package cache
+  apt:
+     update_cache: yes
+
+- name: Install required packages
+  package:
+    name: 
+      - "{{ item }}"
+    state: present
+  with_items:
+      - "{{ required_packages }}"
+
+- name: Generate RADVD Configuration
+  template:
+    src: "radvd.conf.j2"
+    dest: "/etc/radvd.conf"
+    mode: 0644
+
+- name: Enable RADVD Daemon service in systemd
+  systemd:
+    name: radvd
+    enabled: yes
+    masked: no
+    
+- name: Test the RADVD configuration and trigger a service restart
+  command: radvd --configtest
+  notify: ["Restart RADVD Service"]

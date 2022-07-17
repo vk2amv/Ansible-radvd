@@ -1,0 +1,6 @@
+---
+
+- name: Restart RADVD Service
+  service:
+    state: restarted
+    name: radvd
